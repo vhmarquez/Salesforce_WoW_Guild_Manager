@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Main_Spec__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Select the main spec of the lead</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Select the main spec of the lead</inlineHelpText>
+    <label>Main Spec</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Specialization__c.Class__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Class__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Specialization__c</referenceTo>
+    <relationshipLabel>Leads</relationshipLabel>
+    <relationshipName>Leads</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>
