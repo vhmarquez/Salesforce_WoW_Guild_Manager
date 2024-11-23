@@ -35,6 +35,10 @@ public with sharing class WoWProfileAPI {
 
     public static String fetchCharacterProfileSummary(String realmSlug, String characterName, String namespaceProfile){
 
+        // if(String.isBlank(realmSlug) || String.isBlank(characterName) || String.isBlank(namespaceProfile){
+            
+        // }
+
         HttpRequest req = new HttpRequest();
         req.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName+'?namespace='+namespaceProfile);
         req.setMethod('GET');
