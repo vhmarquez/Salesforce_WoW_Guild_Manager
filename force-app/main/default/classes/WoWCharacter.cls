@@ -1,8 +1,8 @@
 public with sharing class WoWCharacter {
 
-    public static Lead createCharacterLead(String realmSlug, String characterName, String locale, String namespaceProfile) {
+    public static void createCharacterLead(String realmSlug, String characterName) {
 
-        String characterProfile = WoWProfileAPI.fetchCharacterProfileSummary(realmSlug, characterName, namespaceProfile);
+        String characterProfile = WoWProfileAPI.fetchCharacterProfileSummary(realmSlug, characterName);
         CharacterProfileSummaryObject characterProfileObject = (CharacterProfileSummaryObject) JSON.deserialize(characterProfile.replaceAll('_links', 'links'), CharacterProfileSummaryObject.class);
         
         Id classId = [SELECT Id FROM Class__c WHERE Name =: characterProfileObject.character_class.name.en_US LIMIT 1].Id;
@@ -23,19 +23,24 @@ public with sharing class WoWCharacter {
         );
 
         try{
-            upsert characterLead;
+            if(Schema.SObjectType.Lead.isCreateable()
+            && Schema.SObjectType.Lead.isUpdateable()){
+                upsert characterLead;
+            }
         } catch (DmlException e) {
-            System.debug('The following exception has occurred: ' + e.getMessage());
+            System.debug('The following exception has occurred when trying to upsert a Character Lead: ' + e.getMessage());
         }
     }
 
-    public static void createCharacterModel(String realmSlug, String characterName, String locale, String namespaceProfile) {
+    public static void createCharacterModel(String realmSlug, String characterName) {
 
         String characterMedia = WoWProfileAPI.fetchCharacterMediaSummary(realmSlug, characterName, namespaceProfile, locale);
         String characterEquipment = WoWProfileAPI.fetchCharacterEquipmentSummary(realmSlug, characterName, namespaceProfile, locale);
+        
 
         CharacterMediaSummaryObject characterMediaObject = (CharacterMediaSummaryObject) JSON.deserialize(characterMedia.replaceAll('_links', 'links'), CharacterMediaSummaryObject.class);
         CharacterEquipmentSummaryObject characterEquipmentObject = (CharacterEquipmentSummaryObject) JSON.deserialize(characterEquipment.replaceAll('set', 'set_bonus').replaceAll('_links', 'links').replaceAll('links', 'links_extra'), CharacterEquipmentSummaryObject.class);
+        ItemMediaObject media = (ItemMediaObject)JSON.deserialize(res.getBody().replaceAll('_links', 'links'), ItemMediaObject.class);
 
         Id leadId = [SELECT Id FROM Lead WHERE LastName =: characterEquipmentObject.character.name AND Realm__c =: characterEquipmentObject.character.realm.name].Id;
 

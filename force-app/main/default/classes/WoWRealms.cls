@@ -1,5 +1,5 @@
 public with sharing class WoWRealms {
-    
+
     public static void createAllRealms() {
 
         String getRealms = WoWProfileAPI.fetchRealmIndex();
@@ -11,7 +11,10 @@ public with sharing class WoWRealms {
         }
 
         try{
-            upsert realms;
+            if(Schema.sObjectType.Realm__c.isCreateable()
+            && Schema.sObjectType.Realm__c.isUpdateable()){
+                upsert realms;
+            }
         } catch(DmlException e){
             System.debug('The following exception has occurred: ' + e.getMessage());
         }
