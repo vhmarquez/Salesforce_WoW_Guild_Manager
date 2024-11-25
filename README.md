@@ -1,7 +1,7 @@
 # About the Author
 
 Hey there, thanks for your interest! My name is [Victor Marquez, I'm a Senior Salesforce Admin and Developer](https://www.linkedin.com/in/victorhmarquez/).
-One of my hobbies is playing a video game called [World of Warcraft](https://worldofwarcraft.blizzard.com/en-us/). I've made many long lasting friendships, and in fact met my wife through WoW.
+One of my hobbies is playing a video game called [World of Warcraft](https://worldofwarcraft.blizzard.com/en-us/). I've made many long lasting friendships, and in fact met my wife through WoW. This project is created as a demonstration of some of my Salesforce Admin and Develoment skills, but also to share some of my personal interests.
 
 ## Salesforce World of Warcraft Guild Manager
 
