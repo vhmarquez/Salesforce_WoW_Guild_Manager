@@ -7,19 +7,18 @@ public with sharing class WoWCharacter {
         
         Id classId = [SELECT Id FROM Class__c WHERE Name =: characterProfileObject.character_class.name.en_US LIMIT 1].Id;
         Id specId = [SELECT Id FROM Specialization__c WHERE Class__c =: classId AND Name =: characterProfileObject.active_spec.name.en_US LIMIT 1].Id;
+        Id realmId = [SELECT Id FROM Realm__c WHERE Name =: characterProfileObject.realm.name.en_US LIMIT 1].Id;
 
         Lead characterLead = new Lead(
             LastName=characterName,
             Company='WoW API',
-            Realm__c=characterProfileObject.realm.name.en_US,
+            Realm__c=realmId,
             Faction__c=characterProfileObject.faction.name.en_US,
-            Class__c=classId.get(0).Id,
-            Main_Spec__c=classSpecId.get(0).Id,
+            Class__c=classId,
+            Main_Spec__c=SpecId,
             Level__c=characterProfileObject.level,
             Item_Level__c=characterProfileObject.equipped_item_level,
-            Race__c=characterProfileObject.race.name.en_US,
-            Achievement_Points__c=characterProfileObject.achievement_points,
-            Character_Render__c=characterMediaObject.assets[2].value
+            Race__c=characterProfileObject.race.name.en_US
         );
 
         try{
@@ -34,15 +33,15 @@ public with sharing class WoWCharacter {
 
     public static void createCharacterModel(String realmSlug, String characterName) {
 
-        String characterMedia = WoWProfileAPI.fetchCharacterMediaSummary(realmSlug, characterName, namespaceProfile, locale);
-        String characterEquipment = WoWProfileAPI.fetchCharacterEquipmentSummary(realmSlug, characterName, namespaceProfile, locale);
+        String characterMedia = WoWProfileAPI.fetchCharacterMediaSummary(realmSlug, characterName);
+        String characterEquipment = WoWProfileAPI.fetchCharacterEquipmentSummary(realmSlug, characterName);
         
 
         CharacterMediaSummaryObject characterMediaObject = (CharacterMediaSummaryObject) JSON.deserialize(characterMedia.replaceAll('_links', 'links'), CharacterMediaSummaryObject.class);
         CharacterEquipmentSummaryObject characterEquipmentObject = (CharacterEquipmentSummaryObject) JSON.deserialize(characterEquipment.replaceAll('set', 'set_bonus').replaceAll('_links', 'links').replaceAll('links', 'links_extra'), CharacterEquipmentSummaryObject.class);
-        ItemMediaObject media = (ItemMediaObject)JSON.deserialize(res.getBody().replaceAll('_links', 'links'), ItemMediaObject.class);
+        // ItemMediaObject media = (ItemMediaObject)JSON.deserialize(res.getBody().replaceAll('_links', 'links'), ItemMediaObject.class);
 
-        Id leadId = [SELECT Id FROM Lead WHERE LastName =: characterEquipmentObject.character.name AND Realm__c =: characterEquipmentObject.character.realm.name].Id;
+        // Id leadId = [SELECT Id FROM Lead WHERE LastName =: characterEquipmentObject.character.name AND Realm__c =: characterEquipmentObject.character.realm.name].Id;
 
     }
 

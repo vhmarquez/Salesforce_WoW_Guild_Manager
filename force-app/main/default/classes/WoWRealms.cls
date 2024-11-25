@@ -3,7 +3,7 @@ public with sharing class WoWRealms {
     public static void createAllRealms() {
 
         String getRealms = WoWProfileAPI.fetchRealmIndex();
-        RealmIndexObject realmIndex = (RealmIndexObject) JSON.deserialize(res.getBody().replaceAll('_links', 'links'), RealmIndexObject.class);
+        RealmIndexObject realmIndex = (RealmIndexObject) JSON.deserialize(getRealms.replaceAll('_links', 'links'), RealmIndexObject.class);
         
         List<Realm__c> realms = new List<Realm__c>();
         for(RealmIndexObject.realms realm : realmIndex.realms){
@@ -16,7 +16,7 @@ public with sharing class WoWRealms {
                 upsert realms;
             }
         } catch(DmlException e){
-            System.debug('The following exception has occurred: ' + e.getMessage());
+            System.debug('The following exception has occurred when trying to upsert Realms: ' + e.getMessage());
         }
     }
 }
