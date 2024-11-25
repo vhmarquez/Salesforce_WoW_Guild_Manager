@@ -1,18 +1,14 @@
-# Salesforce DX Project: Next Steps
+# About the Author
 
-Now that you’ve created a Salesforce DX project, what’s next? Here are some documentation resources to get you started.
+Hey there, thanks for your interest! My name is [Victor Marquez, I'm a Senior Salesforce Admin and Developer](https://www.linkedin.com/in/victorhmarquez/).
+One of my hobbies is playing a video game called World of Warcraft. I've made many long lasting friendships, and in fact met my wife through WoW.
 
-## How Do You Plan to Deploy Your Changes?
+## Salesforce World of Warcraft Guild Manager
 
-Do you want to deploy a set of changes, or create a self-contained application? Choose a [development model](https://developer.salesforce.com/tools/vscode/en/user-guide/development-models).
+I've managed several "Guild" groups, as well as lead many "Raids" throughout the years and have found that there are many systems in Salesforce that can be used in order to help many facets of Guild leading.
 
-## Configure Your Salesforce DX Project
+- Marketing Campaigns & Sales Pipelines: In WoW, advertising your Guild whether it be in-game or through social media and websites is an important part of keeping your Guild functioning properly. Marketing Campaigns can help us keep track of where our leads are coming from, and help us understand where to focus our recruitment and sales. Sales Pipelines can be used for managing the life cycle of potential buyers (people sometimes pay in-game gold to purchase certain items, or if they need help defeating certain encounters), as well as vetting potential new members.
 
-The `sfdx-project.json` file contains useful configuration information for your project. See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm) in the _Salesforce DX Developer Guide_ for details about this file.
+- Custom Web Service Integration (Named Credentials & APEX): In order to pull "member" or "client" data, we can connect to [Blizzard's Battle.net API](https://develop.battle.net/documentation). In this case the data will be that of character's in the game that are played by individuals that are either applying to join the guild or are looking to be clients of the guild's services. We'll be accessing the API with the use of Salesforce's Named Credentials feature, and accessing the callout in various APEX classes and methods tied to various endpoints.
 
-## Read All About It
-
-- [Salesforce Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
-- [Salesforce CLI Setup Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_intro.htm)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/cli_reference.htm)
+- Custom Lightning Web Components: I'll be creating custom LWC's that will utilize the callouts created in APEX, and display rendered images of the characters as well and the items that they are using. Other LWC's will be built as necessary, but this will be the main one.
