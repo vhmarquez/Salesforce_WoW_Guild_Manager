@@ -31,5 +31,4 @@ public with sharing class WoWDataAPI {
         
         return UtilityMethods.callRetry(request, 'WoWDataAPI.fetchItemMedia()');
     }
-
 }

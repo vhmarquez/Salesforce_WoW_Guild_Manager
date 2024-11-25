@@ -12,7 +12,7 @@ public with sharing class WoWProfileAPI {
     public static String fetchCharacterProfileSummary(String realmSlug, String characterName){
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName+'?namespace=profile-us');
+        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName.toLowerCase()+'?namespace=profile-us');
         request.setMethod('GET');
         
         return UtilityMethods.callRetry(request, 'WoWProfileAPI.fetchCharacterProfileSummary()');
@@ -21,7 +21,7 @@ public with sharing class WoWProfileAPI {
     public static String fetchCharacterMediaSummary(String realmSlug, String characterName){
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName+'/character-media?namespace=profile-us&locale=en_US');
+        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName.toLowerCase()+'/character-media?namespace=profile-us&locale=en_US');
         request.setMethod('GET');
         
         return UtilityMethods.callRetry(request, 'WoWProfileAPI.fetchCharacterMediaSummary()' );
@@ -30,10 +30,9 @@ public with sharing class WoWProfileAPI {
     public static String fetchCharacterEquipmentSummary(String realmSlug, String characterName){
 
         HttpRequest request = new HttpRequest();
-        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName+'/equipment?namespace=profile-us&locale=en_US');
+        request.setEndpoint('callout:US_Profile_API/profile/wow/character/'+realmSlug+'/'+characterName.toLowerCase()+'/equipment?namespace=profile-us&locale=en_US');
         request.setMethod('GET');
         
         return UtilityMethods.callRetry(request, 'WoWProfileAPI.fetchCharacterEquipmentSummary()' );
     }
-
 }
