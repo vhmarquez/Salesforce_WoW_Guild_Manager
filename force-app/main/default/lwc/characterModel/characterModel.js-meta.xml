@@ -11,7 +11,7 @@
         <targetConfig targets="lightning__RecordPage">
             <property name="recordId" type="String" label="Record ID" description="" />
             <objects>
-                <object>Character_Model__c</object>
+                <object>Guild_Applicant__c</object>
             </objects>
         </targetConfig>
     </targetConfigs>
