@@ -42,14 +42,8 @@ public with sharing class WoWCharacter {
 
         Map<String,String> itemMap = mapItemNameToURL(characterEquipmentObject);
 
-        Id realmId = [SELECT Id FROM Realm__c WHERE Realm_Slug__c =: realmSlug LIMIT 1].Id;
-        Id applicantId = [SELECT Id FROM Guild_Applicant__c WHERE Name =: characterName.capitalize() AND Realm__c =: realmId LIMIT 1].Id;
-        Id memberId = [SELECT Id FROM Guild_Member__c WHERE Name =: characterName.capitalize() AND Realm__c =: realmId LIMIT 1].Id;
-
         Character_Model__c characterModel = new Character_Model__c(
             Name=characterName.capitalize(),
-            Guild_Applicant__c=applicantId,
-            Guild_Member__c=memberId,
             Avatar__c=characterMediaObject.assets[0].value,
             Inset__c=characterMediaObject.assets[1].value,
             Main_Raw__c=characterMediaObject.assets[2].value,
