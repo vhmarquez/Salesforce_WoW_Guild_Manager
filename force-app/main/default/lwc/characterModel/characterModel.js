@@ -1,60 +1,32 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import { getRecord, getFieldValue, getRecords } from 'lightning/uiRecordApi';
+import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import MISSING_ITEM_URL from '@salesforce/resourceUrl/missing_item';
+
+import CHARACTER_MODEL_OBJECT from '@salesforce/schema/Character_Model__c';
 
 import APPLICANT_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Applicant__c.Character_Model__r.Id';
 import MEMBER_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Member__c.Character_Model__r.Id';
-
-import CHARACTER_MODEL_MAIN_RAW_FIELD from '@salesforce/schema/Character_Model__c.Main_Raw__c';
-import CHARACTER_MODEL_HEAD_FIELD from '@salesforce/schema/Character_Model__c.Head__c';
-import CHARACTER_MODEL_NECK_FIELD from '@salesforce/schema/Character_Model__c.Neck__c';
-import CHARACTER_MODEL_SHOULDER_FIELD from '@salesforce/schema/Character_Model__c.Shoulders__c';
-import CHARACTER_MODEL_CHEST_FIELD from '@salesforce/schema/Character_Model__c.Chest__c';
-import CHARACTER_MODEL_MAIN_HAND_FIELD from '@salesforce/schema/Character_Model__c.Main_Hand__c';
-import CHARACTER_MODEL_OFF_HAND_FIELD from '@salesforce/schema/Character_Model__c.Off_Hand__c';
-import CHARACTER_MODEL_WAIST_FIELD from '@salesforce/schema/Character_Model__c.Waist__c';
-import CHARACTER_MODEL_LEGS_FIELD from '@salesforce/schema/Character_Model__c.Legs__c';
-import CHARACTER_MODEL_FEET_FIELD from '@salesforce/schema/Character_Model__c.Feet__c';
-import CHARACTER_MODEL_WRIST_FIELD from '@salesforce/schema/Character_Model__c.Wrist__c';
-import CHARACTER_MODEL_HANDS_FIELD from '@salesforce/schema/Character_Model__c.Hands__c';
-import CHARACTER_MODEL_FINGER_FIELD from '@salesforce/schema/Character_Model__c.Finger__c';
-import CHARACTER_MODEL_FINGER_2_FIELD from '@salesforce/schema/Character_Model__c.Finger_2__c';
-import CHARACTER_MODEL_TRINKET_1_FIELD from '@salesforce/schema/Character_Model__c.Trinket_1__c';
-import CHARACTER_MODEL_TRINKET_2_FIELD from '@salesforce/schema/Character_Model__c.Trinket_2__c';
-import CHARACTER_MODEL_TABARD_FIELD from '@salesforce/schema/Character_Model__c.Tabard__c';
-import CHARACTER_MODEL_BACK_FIELD from '@salesforce/schema/Character_Model__c.Back__c';
 
 const GUILD_FIELDS = [
     APPLICANT_CHARACTER_MODEL_ID_FIELD,
     MEMBER_CHARACTER_MODEL_ID_FIELD
 ];
 
-const CHARACTER_MODEL_FIELDS = [
-    CHARACTER_MODEL_MAIN_RAW_FIELD,
-    CHARACTER_MODEL_HEAD_FIELD,
-    CHARACTER_MODEL_NECK_FIELD,
-    CHARACTER_MODEL_SHOULDER_FIELD,
-    CHARACTER_MODEL_CHEST_FIELD,
-    CHARACTER_MODEL_MAIN_HAND_FIELD,
-    CHARACTER_MODEL_OFF_HAND_FIELD,
-    CHARACTER_MODEL_WAIST_FIELD,
-    CHARACTER_MODEL_LEGS_FIELD,
-    CHARACTER_MODEL_FEET_FIELD,
-    CHARACTER_MODEL_WRIST_FIELD,
-    CHARACTER_MODEL_HANDS_FIELD,
-    CHARACTER_MODEL_FINGER_FIELD,
-    CHARACTER_MODEL_FINGER_2_FIELD,
-    CHARACTER_MODEL_TRINKET_1_FIELD,
-    CHARACTER_MODEL_TRINKET_2_FIELD,
-    CHARACTER_MODEL_TABARD_FIELD,
-    CHARACTER_MODEL_BACK_FIELD
-];
+let CHARACTER_MODEL_FIELDS = [];
 
 export default class CharacterModel extends LightningElement {
 
     @api recordId;
     @api characterModelId;
+    @api objectApiName;
+
+    characterModelInfo;
+
     missingItemUrl = MISSING_ITEM_URL;
+
+    @wire(getObjectInfo, { objectApiName: CHARACTER_MODEL_OBJECT })
+    characterModelInfo;
 
     @wire(getRecord, { recordId: "$recordId", fields: GUILD_FIELDS})
     guild({ error, data }) {
@@ -63,7 +35,10 @@ export default class CharacterModel extends LightningElement {
                 this.characterModelId = getFieldValue(data, APPLICANT_CHARACTER_MODEL_ID_FIELD);
             } else if (MEMBER_CHARACTER_MODEL_ID_FIELD != null){
                 this.characterModelId = getFieldValue(data, MEMBER_CHARACTER_MODEL_ID_FIELD);
-            }            
+            }
+            for(const field in this.characterModelInfo.data.fields){
+                CHARACTER_MODEL_FIELDS.push(this.characterModelInfo.data.apiName + '.' + this.characterModelInfo.data.fields[field].apiName);
+            }
         } else if (error) {
             console.log(error);
         }
@@ -73,75 +48,75 @@ export default class CharacterModel extends LightningElement {
     characterModel;
 
     get characterRender() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_MAIN_RAW_FIELD);
+        return this.characterModel.data.fields.Main_Raw__c.value;
     }
 
     get head() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_HEAD_FIELD);
+        return this.characterModel.data.fields.Head__c.value;
     }
 
     get neck() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_NECK_FIELD);
+        return this.characterModel.data.fields.Neck__c.value;
     }
 
     get shoulders() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_SHOULDER_FIELD);
+        return this.characterModel.data.fields.Shoulders__c.value;
     }
 
     get chest() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_CHEST_FIELD);
+        return this.characterModel.data.fields.Chest__c.value;
     }
 
     get waist() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_WAIST_FIELD);
+        return this.characterModel.data.fields.Waist__c.value;
     }
 
     get legs() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_LEGS_FIELD);
+        return this.characterModel.data.fields.Legs__c.value;
     }
 
     get feet() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_FEET_FIELD);
+        return this.characterModel.data.fields.Feet__c.value;
     }
 
     get wrist() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_WRIST_FIELD);
+        return this.characterModel.data.fields.Wrist__c.value;
     }
 
     get hands() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_HANDS_FIELD);
+        return this.characterModel.data.fields.Hands__c.value;
     }
 
     get finger() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_FINGER_FIELD);
+        return this.characterModel.data.fields.Finger__c.value;
     }
 
     get finger_2() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_FINGER_2_FIELD);
+        return this.characterModel.data.fields.Finger_2__c.value;
     }
 
     get trinket() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_TRINKET_1_FIELD);
+        return this.characterModel.data.fields.Trinket_1__c.value;
     }
 
     get trinket_2() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_TRINKET_2_FIELD);
+        return this.characterModel.data.fields.Trinket_2__c.value;
     }
 
     get back() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_BACK_FIELD);
+        return this.characterModel.data.fields.Back__c.value;
     }
 
     get main_hand() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_MAIN_HAND_FIELD);
+        return this.characterModel.data.fields.Main_Hand__c.value;
     }
 
     get off_hand() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_OFF_HAND_FIELD);
+        return this.characterModel.data.fields.Off_Hand__c.value;
     }
 
     get tabard() {
-        return getFieldValue(this.characterModel.data, CHARACTER_MODEL_TABARD_FIELD);
+        return this.characterModel.data.fields.Tabard__c.value;
     }
 
 }
