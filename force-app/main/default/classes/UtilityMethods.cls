@@ -8,7 +8,7 @@ public with sharing class UtilityMethods {
             try{
                 response = http.send(request);
                 if(response.getStatusCode() != 500) {
-                    //System.debug(response.getBody());
+                    System.debug(response.getBody());
                     return response.getBody();
                 }
             } catch(Exception e){

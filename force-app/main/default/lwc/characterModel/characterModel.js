@@ -3,10 +3,10 @@ import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import MISSING_ITEM_URL from '@salesforce/resourceUrl/missing_item';
 
-import CHARACTER_MODEL_OBJECT from '@salesforce/schema/Character_Model__c';
-
 import APPLICANT_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Applicant__c.Character_Model__r.Id';
 import MEMBER_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Member__c.Character_Model__r.Id';
+
+import CHARACTER_MODEL_OBJECT from '@salesforce/schema/Character_Model__c';
 
 const GUILD_FIELDS = [
     APPLICANT_CHARACTER_MODEL_ID_FIELD,
@@ -21,12 +21,12 @@ export default class CharacterModel extends LightningElement {
     @api characterModelId;
     @api objectApiName;
 
-    characterModelInfo;
+    @track objectInfo;
 
     missingItemUrl = MISSING_ITEM_URL;
 
     @wire(getObjectInfo, { objectApiName: CHARACTER_MODEL_OBJECT })
-    characterModelInfo;
+    objectInfo;
 
     @wire(getRecord, { recordId: "$recordId", fields: GUILD_FIELDS})
     guild({ error, data }) {
@@ -36,8 +36,8 @@ export default class CharacterModel extends LightningElement {
             } else if (MEMBER_CHARACTER_MODEL_ID_FIELD != null){
                 this.characterModelId = getFieldValue(data, MEMBER_CHARACTER_MODEL_ID_FIELD);
             }
-            for(const field in this.characterModelInfo.data.fields){
-                CHARACTER_MODEL_FIELDS.push(this.characterModelInfo.data.apiName + '.' + this.characterModelInfo.data.fields[field].apiName);
+            for(const field in this.objectInfo.data.fields){
+                CHARACTER_MODEL_FIELDS.push(this.objectInfo.data.apiName + '.' + this.objectInfo.data.fields[field].apiName);
             }
         } else if (error) {
             console.log(error);
