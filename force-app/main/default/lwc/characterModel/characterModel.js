@@ -2,7 +2,9 @@ import { LightningElement, api, wire, track } from 'lwc';
 import { getRecord, getFieldValue, getRecords } from 'lightning/uiRecordApi';
 import MISSING_ITEM_URL from '@salesforce/resourceUrl/missing_item';
 
-import CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Applicant__c.Character_Model__r.Id';
+import APPLICANT_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Applicant__c.Character_Model__r.Id';
+import MEMBER_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Member__c.Character_Model__r.Id';
+
 import CHARACTER_MODEL_MAIN_RAW_FIELD from '@salesforce/schema/Character_Model__c.Main_Raw__c';
 import CHARACTER_MODEL_HEAD_FIELD from '@salesforce/schema/Character_Model__c.Head__c';
 import CHARACTER_MODEL_NECK_FIELD from '@salesforce/schema/Character_Model__c.Neck__c';
@@ -22,14 +24,9 @@ import CHARACTER_MODEL_TRINKET_2_FIELD from '@salesforce/schema/Character_Model_
 import CHARACTER_MODEL_TABARD_FIELD from '@salesforce/schema/Character_Model__c.Tabard__c';
 import CHARACTER_MODEL_BACK_FIELD from '@salesforce/schema/Character_Model__c.Back__c';
 
-import BASE_CHARACTER_MODEL from '@salesforce/schema/Character_Model__c.Main_Raw__c';
-
-const BASE = [
-    BASE_CHARACTER_MODEL
-];
-
 const GUILD_FIELDS = [
-    CHARACTER_MODEL_ID_FIELD
+    APPLICANT_CHARACTER_MODEL_ID_FIELD,
+    MEMBER_CHARACTER_MODEL_ID_FIELD
 ];
 
 const CHARACTER_MODEL_FIELDS = [
@@ -62,7 +59,11 @@ export default class CharacterModel extends LightningElement {
     @wire(getRecord, { recordId: "$recordId", fields: GUILD_FIELDS})
     guild({ error, data }) {
         if (data) {
-            this.characterModelId = getFieldValue(data, CHARACTER_MODEL_ID_FIELD);
+            if (APPLICANT_CHARACTER_MODEL_ID_FIELD != null){
+                this.characterModelId = getFieldValue(data, APPLICANT_CHARACTER_MODEL_ID_FIELD);
+            } else if (MEMBER_CHARACTER_MODEL_ID_FIELD != null){
+                this.characterModelId = getFieldValue(data, MEMBER_CHARACTER_MODEL_ID_FIELD);
+            }            
         } else if (error) {
             console.log(error);
         }

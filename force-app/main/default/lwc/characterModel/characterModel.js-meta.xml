@@ -12,6 +12,7 @@
             <property name="recordId" type="String" label="Record ID" description="" />
             <objects>
                 <object>Guild_Applicant__c</object>
+                <object>Guild_Member__c</object>
             </objects>
         </targetConfig>
     </targetConfigs>
