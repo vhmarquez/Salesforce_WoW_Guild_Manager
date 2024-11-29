@@ -1,0 +1,1 @@
+WoWCharacter.createCharacterModel('bleeding-hollow', 'Avechristus');

@@ -1,44 +1,53 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import { getRecord, getFieldValue } from 'lightning/uiRecordApi';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import { getRecord } from 'lightning/uiRecordApi';
+import { getObjectInfos } from 'lightning/uiObjectInfoApi';
 import MISSING_ITEM_URL from '@salesforce/resourceUrl/missing_item';
 
-import APPLICANT_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Applicant__c.Character_Model__r.Id';
-import MEMBER_CHARACTER_MODEL_ID_FIELD from '@salesforce/schema/Guild_Member__c.Character_Model__r.Id';
-
 import CHARACTER_MODEL_OBJECT from '@salesforce/schema/Character_Model__c';
+import GUILD_APPLICANT_OBJECT from '@salesforce/schema/Guild_Applicant__c';
+import GUILD_MEMBER_OBJECT from '@salesforce/schema/Guild_Member__c';
 
-const GUILD_FIELDS = [
-    APPLICANT_CHARACTER_MODEL_ID_FIELD,
-    MEMBER_CHARACTER_MODEL_ID_FIELD
-];
-
+let GUILD_FIELDS = [];
 let CHARACTER_MODEL_FIELDS = [];
 
 export default class CharacterModel extends LightningElement {
 
     @api recordId;
-    @api characterModelId;
-    @api objectApiName;
-
-    @track objectInfo;
-
+    @track characterModelId;
+    
+    characterName;
+    characterTitle;
     missingItemUrl = MISSING_ITEM_URL;
 
-    @wire(getObjectInfo, { objectApiName: CHARACTER_MODEL_OBJECT })
-    objectInfo;
+    @wire(getObjectInfos, { objectApiNames: [CHARACTER_MODEL_OBJECT, GUILD_APPLICANT_OBJECT, GUILD_MEMBER_OBJECT] })
+    objectInfos({ error, data }) {
+        if (data != null){
+            let characterModelObject = data.results[0].result;
+            let applicantObject = data.results[1].result;
+            let memberObject = data.results[2].result;
 
-    @wire(getRecord, { recordId: "$recordId", fields: GUILD_FIELDS})
+            for(const field in characterModelObject.fields){
+                CHARACTER_MODEL_FIELDS.push(characterModelObject.apiName + '.' + characterModelObject.fields[field].apiName)
+            }
+
+            for(const field in applicantObject.fields){
+                GUILD_FIELDS.push(applicantObject.apiName + '.' + applicantObject.fields[field].apiName)
+            }
+
+            for(const field in memberObject.fields){
+                GUILD_FIELDS.push(memberObject.apiName + '.' + memberObject.fields[field].apiName)
+            }
+        } else if (error){
+            console.log(error);
+        }
+    };
+
+    @wire(getRecord, { recordId: "$recordId", fields: GUILD_FIELDS })
     guild({ error, data }) {
-        if (data) {
-            if (APPLICANT_CHARACTER_MODEL_ID_FIELD != null){
-                this.characterModelId = getFieldValue(data, APPLICANT_CHARACTER_MODEL_ID_FIELD);
-            } else if (MEMBER_CHARACTER_MODEL_ID_FIELD != null){
-                this.characterModelId = getFieldValue(data, MEMBER_CHARACTER_MODEL_ID_FIELD);
-            }
-            for(const field in this.objectInfo.data.fields){
-                CHARACTER_MODEL_FIELDS.push(this.objectInfo.data.apiName + '.' + this.objectInfo.data.fields[field].apiName);
-            }
+        if (data != null) {
+            this.characterModelId = data.fields.Character_Model__c.value;
+            this.characterName = data.fields.Name.value;
+            this.characterTitle = data.fields.Title__c.value;
         } else if (error) {
             console.log(error);
         }
@@ -46,6 +55,14 @@ export default class CharacterModel extends LightningElement {
 
     @wire(getRecord, { recordId: "$characterModelId", fields: CHARACTER_MODEL_FIELDS})
     characterModel;
+
+    get name() {
+        return this.characterName;
+    }
+
+    get title() {
+        return this.characterTitle;
+    }
 
     get characterRender() {
         return this.characterModel.data.fields.Main_Raw__c.value;
