@@ -3,7 +3,7 @@
     <fullName>Legs__c</fullName>
     <externalId>false</externalId>
     <label>Legs</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

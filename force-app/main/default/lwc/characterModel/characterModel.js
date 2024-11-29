@@ -7,14 +7,17 @@ import CHARACTER_MODEL_OBJECT from '@salesforce/schema/Character_Model__c';
 import GUILD_APPLICANT_OBJECT from '@salesforce/schema/Guild_Applicant__c';
 import GUILD_MEMBER_OBJECT from '@salesforce/schema/Guild_Member__c';
 
+let APPLICANT_GUILD_FIELDS = [];
+let MEMBER_GUILD_FIELDS = [];
 let GUILD_FIELDS = [];
 let CHARACTER_MODEL_FIELDS = [];
 
 export default class CharacterModel extends LightningElement {
 
     @api recordId;
-    @track characterModelId;
-    
+    @api objectApiName;
+
+    characterModelId;
     characterName;
     characterTitle;
     missingItemUrl = MISSING_ITEM_URL;
@@ -31,11 +34,17 @@ export default class CharacterModel extends LightningElement {
             }
 
             for(const field in applicantObject.fields){
-                GUILD_FIELDS.push(applicantObject.apiName + '.' + applicantObject.fields[field].apiName)
+                APPLICANT_GUILD_FIELDS.push(applicantObject.apiName + '.' + applicantObject.fields[field].apiName)
             }
 
             for(const field in memberObject.fields){
-                GUILD_FIELDS.push(memberObject.apiName + '.' + memberObject.fields[field].apiName)
+                MEMBER_GUILD_FIELDS.push(memberObject.apiName + '.' + memberObject.fields[field].apiName)
+            }
+
+            if (this.objectApiName == applicantObject.apiName){
+                GUILD_FIELDS = APPLICANT_GUILD_FIELDS;
+            } else if (this.objectApiName == memberObject.apiName){
+                GUILD_FIELDS = MEMBER_GUILD_FIELDS;
             }
         } else if (error){
             console.log(error);

@@ -3,7 +3,7 @@
     <fullName>Neck__c</fullName>
     <externalId>false</externalId>
     <label>Neck</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

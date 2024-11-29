@@ -3,7 +3,7 @@
     <fullName>Back__c</fullName>
     <externalId>false</externalId>
     <label>Back</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

@@ -3,7 +3,7 @@
     <fullName>Main_Hand__c</fullName>
     <externalId>false</externalId>
     <label>Main Hand</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

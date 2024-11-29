@@ -3,7 +3,7 @@
     <fullName>Waist__c</fullName>
     <externalId>false</externalId>
     <label>Waist</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

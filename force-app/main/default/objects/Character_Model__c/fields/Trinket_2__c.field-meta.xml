@@ -3,7 +3,7 @@
     <fullName>Trinket_2__c</fullName>
     <externalId>false</externalId>
     <label>Secondary Trinket</label>
-    <required>true</required>
+    <required>false</required>
     <trackTrending>false</trackTrending>
     <type>Url</type>
 </CustomField>

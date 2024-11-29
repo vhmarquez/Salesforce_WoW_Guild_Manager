@@ -81,11 +81,12 @@ public with sharing class WoWCharacter {
         Id realmId = [SELECT Id FROM Realm__c WHERE Name =: characterProfileObject.realm.name.en_US LIMIT 1].Id;
         Id raceId = [SELECT Id FROM Race__c WHERE Name =: characterProfileObject.race.name.en_US.escapeJava() LIMIT 1].Id;
 
-        Character_Model__c characterModel = createCharacterModel(realmSlug, characterName);
+        Character_Model__c characterModel = createCharacterModel(realmSlug, characterName, characterProfileObject.id);
 
         List<SObject> guildApplicant = new List<SObject>();
         SObject characterApplicant = new Guild_Applicant__c(
             Id=recordId,
+            Character_ID__c=characterProfileObject.id,
             Name=characterName.capitalize(),
             Realm__c=realmId,
             Faction__c=characterProfileObject.faction.name.en_US,
@@ -105,7 +106,7 @@ public with sharing class WoWCharacter {
         return guildApplicant;
     }
 
-    public static Character_Model__c createCharacterModel(String realmSlug, String characterName) {
+    public static Character_Model__c createCharacterModel(String realmSlug, String characterName, Integer externalId) {
 
         String characterMedia = WoWProfileAPI.fetchCharacterMediaSummary(realmSlug, characterName);
         String characterEquipment = WoWProfileAPI.fetchCharacterEquipmentSummary(realmSlug, characterName);
@@ -116,6 +117,7 @@ public with sharing class WoWCharacter {
         Map<String,String> itemMap = mapItemNameToURL(characterEquipmentObject);
 
         Character_Model__c characterModel = new Character_Model__c(
+            Character_ID__c=externalId,
             Name=characterName.capitalize(),
             Avatar__c=characterMediaObject.assets[0].value,
             Inset__c=characterMediaObject.assets[1].value,
