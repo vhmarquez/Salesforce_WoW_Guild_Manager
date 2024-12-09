@@ -32,40 +32,6 @@ public with sharing class WoWCharacter {
         }
     }
 
-    // public static void createCharacterApplicant(Id realmId, String characterName) {
-
-    //     String realmSlug = [SELECT Id, Realm_Slug__c FROM Realm__c WHERE Id =: realmId].Realm_Slug__c;
-    //     characterName = characterName.toLowerCase();
-
-    //     String characterProfile = WoWProfileAPI.fetchCharacterProfileSummary(realmSlug, characterName);
-    //     CharacterProfileSummaryObject characterProfileObject = (CharacterProfileSummaryObject) JSON.deserialize(characterProfile.replaceAll('_links', 'links'), CharacterProfileSummaryObject.class);
-
-    //     Id classId = [SELECT Id FROM Class__c WHERE Name =: characterProfileObject.character_class.name.en_US LIMIT 1].Id;
-    //     Id specId = [SELECT Id FROM Specialization__c WHERE Class__c =: classId AND Name =: characterProfileObject.active_spec.name.en_US LIMIT 1].Id;
-    //     Id raceId = [SELECT Id FROM Race__c WHERE Name =: characterProfileObject.race.name.en_US.escapeJava() LIMIT 1].Id;
-
-    //     Guild_Applicant__c characterApplicant = new Guild_Applicant__c(
-    //         Name=characterName.capitalize(),
-    //         Realm__c=realmId,
-    //         Faction__c=characterProfileObject.faction.name.en_US,
-    //         Class__c=classId,
-    //         Main_Spec__c=SpecId,
-    //         Level__c=characterProfileObject.level,
-    //         Item_Level__c=characterProfileObject.equipped_item_level,
-    //         Race__c=raceId,
-    //         Title__c=characterProfileObject.active_title.name.en_US
-    //     );
-
-    //     try{
-    //         if(Schema.SObjectType.Lead.isCreateable()
-    //         && Schema.SObjectType.Lead.isUpdateable()){
-    //             upsert characterApplicant;
-    //         }
-    //     } catch (DmlException e) {
-    //         System.debug('The following exception has occurred when trying to upsert a Character Lead: ' + e.getMessage());
-    //     }
-    // }
-
     @InvocableMethod(Label='Wow Character' Description='Creates a new Character Lead from the WoW Profile API')
     public static List<SObject> createCharacterApplicant(List<List<String>> args){
 
