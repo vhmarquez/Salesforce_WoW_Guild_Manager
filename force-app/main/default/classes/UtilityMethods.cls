@@ -1,6 +1,5 @@
 public with sharing class UtilityMethods {
     
-    @Future(callout=true)
     public static String callRetry(HttpRequest request, String callName) {
         
         Http http = new Http();
